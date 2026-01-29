@@ -5,7 +5,9 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import live.servi.domain.exception.DomainException;
 import live.servi.domain.port.output.TokenGenerator;
+import live.servi.infrastructure.exception.AppError;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
@@ -19,12 +21,12 @@ import java.util.UUID;
  * Implementa el puerto TokenGenerator
  */
 @Component
-public class JwtTokenGenerator implements TokenGenerator {
+public class JwtToken implements TokenGenerator {
 
     private final SecretKey secretKey;
     private final long expirationTime;
 
-    public JwtTokenGenerator(
+    public JwtToken(
             @Value("${jwt.secret}") String secret,
             @Value("${jwt.expiration:3600000}") long expirationTime
     ) {
@@ -48,5 +50,19 @@ public class JwtTokenGenerator implements TokenGenerator {
                 .expiration(expirationDate)
                 .signWith(secretKey)
                 .compact();
+    }
+
+    @Override
+    public Map<String, Object> parseToken(String token) {
+        try {
+            return Jwts.parser()
+                    .verifyWith(secretKey)
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload();
+        } catch (Exception e) {
+            AppError error = AppError.of("JWT_PARSE_ERROR", "Error parsing JWT token", 401);
+            throw new DomainException(error);
+        }
     }
 }
