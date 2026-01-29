@@ -42,7 +42,6 @@ class UserServiceTest {
                 .id(UUID.randomUUID())
                 .name("Juan Pérez")
                 .email("juan@example.com")
-                .age(25)
                 .build();
     }
 
@@ -55,7 +54,6 @@ class UserServiceTest {
             .id(userId)
             .name("Juan Pérez")
             .email("juan@example.com")
-            .age(25)
             .build();
 
         when(userRepository.findByEmail(validUser.getEmail())).thenReturn(Optional.empty());
@@ -80,7 +78,6 @@ class UserServiceTest {
         User invalidUser = User.builder()
                 .name("")
                 .email("juan@example.com")
-                .age(25)
                 .build();
 
         // When & Then
@@ -95,7 +92,6 @@ class UserServiceTest {
         User invalidUser = User.builder()
                 .name("Juan Pérez")
                 .email("invalid-email")
-                .age(25)
                 .build();
 
         // When & Then

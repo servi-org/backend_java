@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import live.servi.application.port.input.CreateUserUseCase;
 import live.servi.domain.exception.DomainException;
 import live.servi.domain.model.User;
-import live.servi.infrastructure.adapter.input.rest.UserController;
+import live.servi.infrastructure.adapter.input.rest.AuthController;
 import live.servi.infrastructure.adapter.input.rest.dto.CreateUserRequest;
 import live.servi.infrastructure.adapter.input.rest.dto.UserResponse;
 import live.servi.infrastructure.adapter.input.rest.mapper.UserRestMapper;
@@ -28,7 +28,7 @@ import java.util.UUID;
  * Test de integración para el UserController
  * Prueba la capa REST sin iniciar toda la aplicación
  */
-@WebMvcTest(UserController.class)
+@WebMvcTest(AuthController.class)
 @DisplayName("UserController - Tests de Integración")
 class UserControllerTest {
 
@@ -51,13 +51,11 @@ class UserControllerTest {
         CreateUserRequest request = CreateUserRequest.builder()
                 .name("Juan Pérez")
                 .email("juan@example.com")
-                .age(25)
                 .build();
 
         User domainUser = User.builder()
                 .name("Juan Pérez")
                 .email("juan@example.com")
-                .age(25)
                 .build();
 
         UUID userId = UUID.randomUUID();
@@ -65,14 +63,12 @@ class UserControllerTest {
                 .id(userId)
                 .name("Juan Pérez")
                 .email("juan@example.com")
-                .age(25)
                 .build();
 
         UserResponse response = UserResponse.builder()
                 .id(userId)
                 .name("Juan Pérez")
                 .email("juan@example.com")
-                .age(25)
                 .build();
 
         when(userRestMapper.toDomain(any())).thenReturn(domainUser);
@@ -96,7 +92,6 @@ class UserControllerTest {
         CreateUserRequest request = CreateUserRequest.builder()
                 .name("")
                 .email("juan@example.com")
-                .age(25)
                 .build();
 
         // When & Then
@@ -114,7 +109,6 @@ class UserControllerTest {
         CreateUserRequest request = CreateUserRequest.builder()
                 .name("Juan Pérez")
                 .email("invalid-email")
-                .age(25)
                 .build();
 
         // When & Then
@@ -132,13 +126,11 @@ class UserControllerTest {
         CreateUserRequest request = CreateUserRequest.builder()
                 .name("Juan Pérez")
                 .email("juan@example.com")
-                .age(25)
                 .build();
 
         User domainUser = User.builder()
                 .name("Juan Pérez")
                 .email("juan@example.com")
-                .age(25)
                 .build();
 
         when(userRestMapper.toDomain(any())).thenReturn(domainUser);

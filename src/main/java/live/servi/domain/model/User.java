@@ -15,7 +15,6 @@ public class User {
     private UUID id;
     private String name;
     private String email;
-    private Integer age;
 
     /**
      * Valida que el usuario tenga datos validos
@@ -27,9 +26,6 @@ public class User {
         }
         if (email == null || !email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
             throw new IllegalArgumentException("El email no es válido");
-        }
-        if (age != null && age < 0) {
-            throw new IllegalArgumentException("La edad no puede ser negativa");
         }
     }
 }

@@ -19,7 +19,6 @@ public class UserMapper {
                 .id(entity.getId())
                 .name(entity.getName())
                 .email(entity.getEmail())
-                .age(entity.getAge())
                 .build();
     }
 
@@ -31,7 +30,6 @@ public class UserMapper {
                 .id(user.getId())
                 .name(user.getName())
                 .email(user.getEmail())
-                .age(user.getAge())
                 .build();
     }
 }

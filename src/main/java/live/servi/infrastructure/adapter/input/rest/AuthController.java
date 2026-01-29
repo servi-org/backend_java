@@ -13,20 +13,23 @@ import live.servi.domain.port.output.TokenGenerator;
 import live.servi.infrastructure.adapter.input.rest.dto.CreateUserRequest;
 import live.servi.infrastructure.adapter.input.rest.dto.UserResponse;
 import live.servi.infrastructure.adapter.input.rest.mapper.UserRestMapper;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 /**
  * Controlador REST - Adaptador de entrada
  * Expone los endpoints
  */
 @RestController
-@RequestMapping("/users")
-public class UserController {
+@RequestMapping("/auth")
+public class AuthController {
 
     private final CreateUserUseCase createUserUseCase;
     private final UserRestMapper userRestMapper;
     private final TokenGenerator tokenGenerator;
 
-    public UserController(CreateUserUseCase createUserUseCase, UserRestMapper userRestMapper, TokenGenerator tokenGenerator) {
+    public AuthController(CreateUserUseCase createUserUseCase, UserRestMapper userRestMapper, TokenGenerator tokenGenerator) {
         this.createUserUseCase = createUserUseCase;
         this.userRestMapper = userRestMapper;
         this.tokenGenerator = tokenGenerator;
@@ -38,7 +41,7 @@ public class UserController {
      * @param request Los datos del usuario a crear (se validan con @Valid)
      * @return El usuario creado con status 201 CREATED
      */
-    @PostMapping
+    @PostMapping("/signup-credentials")
     public ResponseEntity<UserResponse> createUser(@Valid @RequestBody CreateUserRequest request) {
         //convertir el DTO a modelo de dominio
         User user = userRestMapper.toDomain(request);
@@ -62,4 +65,10 @@ public class UserController {
                 .headers(headers)
                 .body(response);
     }
+
+    @GetMapping("/signin-credentials")
+    public String getMethodName(@RequestParam String param) {
+        return new String();
+    }
+    
 }

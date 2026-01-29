@@ -19,7 +19,6 @@ public class UserRestMapper {
         return User.builder()
                 .name(request.getName())
                 .email(request.getEmail())
-                .age(request.getAge())
                 .build();
     }
 
@@ -31,7 +30,6 @@ public class UserRestMapper {
                 .id(user.getId())
                 .name(user.getName())
                 .email(user.getEmail())
-                .age(user.getAge())
                 .build();
     }
 }
