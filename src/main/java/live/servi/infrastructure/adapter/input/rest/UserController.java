@@ -1,12 +1,15 @@
 package live.servi.infrastructure.adapter.input.rest;
 
 import jakarta.validation.Valid;
+
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import live.servi.application.port.input.CreateUserUseCase;
 import live.servi.domain.model.User;
+import live.servi.domain.port.output.TokenGenerator;
 import live.servi.infrastructure.adapter.input.rest.dto.CreateUserRequest;
 import live.servi.infrastructure.adapter.input.rest.dto.UserResponse;
 import live.servi.infrastructure.adapter.input.rest.mapper.UserRestMapper;
@@ -21,10 +24,12 @@ public class UserController {
 
     private final CreateUserUseCase createUserUseCase;
     private final UserRestMapper userRestMapper;
+    private final TokenGenerator tokenGenerator;
 
-    public UserController(CreateUserUseCase createUserUseCase, UserRestMapper userRestMapper) {
+    public UserController(CreateUserUseCase createUserUseCase, UserRestMapper userRestMapper, TokenGenerator tokenGenerator) {
         this.createUserUseCase = createUserUseCase;
         this.userRestMapper = userRestMapper;
+        this.tokenGenerator = tokenGenerator;
     }
 
     /**
@@ -44,9 +49,17 @@ public class UserController {
         //convertir el resultado a DTO de respuesta
         UserResponse response = userRestMapper.toResponse(createdUser);
 
+        //generar el token JWT
+        String token = tokenGenerator.generateToken(createdUser.getId(), createdUser.getEmail());
+        
+        //agregar el token en el header Authorization
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + token);
+        
         //retornar con status 201 CREATED
         return ResponseEntity
                 .status(HttpStatus.CREATED)
+                .headers(headers)
                 .body(response);
     }
 }
