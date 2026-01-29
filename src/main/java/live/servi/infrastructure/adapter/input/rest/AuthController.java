@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import live.servi.application.port.input.CreateUserUseCase;
+import live.servi.application.port.input.AuthUseCase;
 import live.servi.domain.model.User;
 import live.servi.domain.port.output.TokenGenerator;
 import live.servi.infrastructure.adapter.input.rest.dto.CreateUserRequest;
@@ -25,11 +25,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/auth")
 public class AuthController {
 
-    private final CreateUserUseCase createUserUseCase;
+    private final AuthUseCase createUserUseCase;
     private final UserRestMapper userRestMapper;
     private final TokenGenerator tokenGenerator;
 
-    public AuthController(CreateUserUseCase createUserUseCase, UserRestMapper userRestMapper, TokenGenerator tokenGenerator) {
+    public AuthController(AuthUseCase createUserUseCase, UserRestMapper userRestMapper, TokenGenerator tokenGenerator) {
         this.createUserUseCase = createUserUseCase;
         this.userRestMapper = userRestMapper;
         this.tokenGenerator = tokenGenerator;

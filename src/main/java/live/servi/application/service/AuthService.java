@@ -2,7 +2,7 @@ package live.servi.application.service;
 
 import org.springframework.stereotype.Service;
 
-import live.servi.application.port.input.CreateUserUseCase;
+import live.servi.application.port.input.AuthUseCase;
 import live.servi.domain.exception.DomainException;
 import live.servi.domain.model.User;
 import live.servi.domain.port.output.PasswordEncoder;
@@ -13,12 +13,12 @@ import live.servi.domain.port.output.UserRepository;
  * implementa la logica de negocio usando los puertos (input)
  */
 @Service
-public class UserService implements CreateUserUseCase {
+public class AuthService implements AuthUseCase {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }

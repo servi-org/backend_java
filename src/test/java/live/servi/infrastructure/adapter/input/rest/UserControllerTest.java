@@ -1,7 +1,7 @@
 package live.servi.infrastructure.adapter.input.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import live.servi.application.port.input.CreateUserUseCase;
+import live.servi.application.port.input.AuthUseCase;
 import live.servi.domain.exception.DomainException;
 import live.servi.domain.model.User;
 import live.servi.infrastructure.adapter.input.rest.AuthController;
@@ -39,7 +39,7 @@ class UserControllerTest {
     private ObjectMapper objectMapper;
 
     @MockBean
-    private CreateUserUseCase createUserUseCase;
+    private AuthUseCase createUserUseCase;
 
     @MockBean
     private UserRestMapper userRestMapper;

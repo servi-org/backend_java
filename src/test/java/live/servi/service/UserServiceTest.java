@@ -8,7 +8,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import live.servi.application.service.UserService;
+import live.servi.application.service.AuthService;
 import live.servi.domain.exception.DomainException;
 import live.servi.domain.model.User;
 import live.servi.domain.port.output.UserRepository;
@@ -32,7 +32,7 @@ class UserServiceTest {
     private UserRepository userRepository;
 
     @InjectMocks
-    private UserService userService;
+    private AuthService userService;
 
     private User validUser;
 
