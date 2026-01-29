@@ -15,6 +15,7 @@ public class User {
     private UUID id;
     private String name;
     private String email;
+    private String password;
 
     /**
      * Valida que el usuario tenga datos validos

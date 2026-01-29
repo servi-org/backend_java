@@ -19,6 +19,7 @@ public class UserRestMapper {
         return User.builder()
                 .name(request.getName())
                 .email(request.getEmail())
+                .password(request.getPassword())
                 .build();
     }
 
