@@ -1,6 +1,6 @@
 spring:
   application:
-    name: hexagonal-template
+    name: servi-backend
 
   # Configuración de la base de datos SQLite
   datasource:
@@ -31,6 +31,6 @@ server:
 # Logs
 logging:
   level:
-    com.template.hexagonal: ${LOG_LEVEL:DEBUG}
+    live.servi: ${LOG_LEVEL:DEBUG}
     org.springframework.web: INFO
     org.hibernate.SQL: DEBUG

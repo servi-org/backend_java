@@ -12,11 +12,11 @@
         <relativePath/>
     </parent>
 
-    <groupId>com.template</groupId>
-    <artifactId>hexagonal-template</artifactId>
+    <groupId>live.servi</groupId>
+    <artifactId>servi-backend</artifactId>
     <version>1.0.0</version>
-    <name>Spring Boot Hexagonal Template</name>
-    <description>Template de Spring Boot con arquitectura hexagonal</description>
+    <name>Servi.live Backend</name>
+    <description>Backend de servi.live con arquitectura hexagonal</description>
 
     <properties>
         <java.version>17</java.version>
