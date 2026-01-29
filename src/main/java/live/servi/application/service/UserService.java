@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import live.servi.application.port.input.CreateUserUseCase;
 import live.servi.domain.exception.DomainException;
 import live.servi.domain.model.User;
+import live.servi.domain.port.output.PasswordEncoder;
 import live.servi.domain.port.output.UserRepository;
 
 /**
@@ -15,9 +16,11 @@ import live.servi.domain.port.output.UserRepository;
 public class UserService implements CreateUserUseCase {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -37,6 +40,9 @@ public class UserService implements CreateUserUseCase {
                         "El usuario con email " + user.getEmail() + " ya existe"
                     );
                 });
+
+        // cifrar la contraseña antes de guardar
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         // guardar y retornar
         return userRepository.save(user);

@@ -29,4 +29,8 @@ public class User {
             throw new IllegalArgumentException("El email no es válido");
         }
     }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }
