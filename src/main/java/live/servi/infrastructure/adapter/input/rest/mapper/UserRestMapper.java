@@ -2,8 +2,10 @@ package live.servi.infrastructure.adapter.input.rest.mapper;
 
 import org.springframework.stereotype.Component;
 
+import live.servi.domain.model.Credential;
 import live.servi.domain.model.User;
-import live.servi.infrastructure.adapter.input.rest.dto.CreateUserRequest;
+import live.servi.infrastructure.adapter.input.rest.dto.SignUpCredentialUserRequest;
+import live.servi.infrastructure.adapter.input.rest.dto.SignInCredentialsUserRequest;
 import live.servi.infrastructure.adapter.input.rest.dto.UserResponse;
 
 /**
@@ -13,11 +15,21 @@ import live.servi.infrastructure.adapter.input.rest.dto.UserResponse;
 public class UserRestMapper {
 
     /**
-     * Convierte el request a modelo de dominio
+     * Convierte el request del create User a modelo de dominio
      */
-    public User toDomain(CreateUserRequest request) {
+    public User toDomain(SignUpCredentialUserRequest request) {
         return User.builder()
                 .name(request.getName())
+                .email(request.getEmail())
+                .password(request.getPassword())
+                .build();
+    }
+
+    /**
+     * Convierte el request del sign in User con credenciales a modelo de dominio
+     */
+    public Credential toDomain(SignInCredentialsUserRequest request) {
+        return Credential.builder()
                 .email(request.getEmail())
                 .password(request.getPassword())
                 .build();

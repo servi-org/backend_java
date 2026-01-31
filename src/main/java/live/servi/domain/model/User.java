@@ -4,12 +4,14 @@ import java.util.UUID;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Entidad de dominio User
  * es la representacion pura del negocio
  */
 @Getter
+@Setter
 @Builder
 public class User {
     private UUID id;
@@ -28,9 +30,5 @@ public class User {
         if (email == null || !email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
             throw new IllegalArgumentException("El email no es válido");
         }
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 }

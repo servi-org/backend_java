@@ -4,8 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import live.servi.application.port.input.AuthUseCase;
 import live.servi.domain.exception.DomainException;
 import live.servi.domain.model.User;
-import live.servi.infrastructure.adapter.input.rest.AuthController;
-import live.servi.infrastructure.adapter.input.rest.dto.CreateUserRequest;
+import live.servi.infrastructure.adapter.input.rest.dto.SignUpCredentialUserRequest;
 import live.servi.infrastructure.adapter.input.rest.dto.UserResponse;
 import live.servi.infrastructure.adapter.input.rest.mapper.UserRestMapper;
 
@@ -48,7 +47,7 @@ class UserControllerTest {
     @DisplayName("POST /users debe crear un usuario y retornar 201")
     void shouldCreateUserAndReturn201() throws Exception {
         // Given
-        CreateUserRequest request = CreateUserRequest.builder()
+        SignUpCredentialUserRequest request = SignUpCredentialUserRequest.builder()
                 .name("Juan Pérez")
                 .email("juan@example.com")
                 .build();
@@ -71,7 +70,7 @@ class UserControllerTest {
                 .email("juan@example.com")
                 .build();
 
-        when(userRestMapper.toDomain(any())).thenReturn(domainUser);
+        when(userRestMapper.toDomain(any(SignUpCredentialUserRequest.class))).thenReturn(domainUser);
         when(createUserUseCase.createUser(any())).thenReturn(createdUser);
         when(userRestMapper.toResponse(any())).thenReturn(response);
 
@@ -89,7 +88,7 @@ class UserControllerTest {
     @DisplayName("POST /users debe retornar 400 cuando el nombre está vacío")
     void shouldReturn400WhenNameIsEmpty() throws Exception {
         // Given
-        CreateUserRequest request = CreateUserRequest.builder()
+        SignUpCredentialUserRequest request = SignUpCredentialUserRequest.builder()
                 .name("")
                 .email("juan@example.com")
                 .build();
@@ -106,7 +105,7 @@ class UserControllerTest {
     @DisplayName("POST /users debe retornar 400 cuando el email es inválido")
     void shouldReturn400WhenEmailIsInvalid() throws Exception {
         // Given
-        CreateUserRequest request = CreateUserRequest.builder()
+        SignUpCredentialUserRequest request = SignUpCredentialUserRequest.builder()
                 .name("Juan Pérez")
                 .email("invalid-email")
                 .build();
@@ -123,7 +122,7 @@ class UserControllerTest {
     @DisplayName("POST /users debe retornar 409 cuando el usuario ya existe")
     void shouldReturn409WhenUserAlreadyExists() throws Exception {
         // Given
-        CreateUserRequest request = CreateUserRequest.builder()
+        SignUpCredentialUserRequest request = SignUpCredentialUserRequest.builder()
                 .name("Juan Pérez")
                 .email("juan@example.com")
                 .build();
@@ -133,7 +132,7 @@ class UserControllerTest {
                 .email("juan@example.com")
                 .build();
 
-        when(userRestMapper.toDomain(any())).thenReturn(domainUser);
+        when(userRestMapper.toDomain(any(SignUpCredentialUserRequest.class))).thenReturn(domainUser);
         when(createUserUseCase.createUser(any())).thenThrow(
                 DomainException.conflict("USER_ALREADY_EXISTS", "El usuario con email juan@example.com ya existe")
         );

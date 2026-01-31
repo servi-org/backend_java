@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateUserRequest {
+public class SignUpCredentialUserRequest {
 
     @NotBlank(message = "El nombre es obligatorio")
     private String name;

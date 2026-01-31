@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 import live.servi.application.port.input.AuthUseCase;
 import live.servi.domain.exception.DomainException;
+import live.servi.domain.model.Credential;
 import live.servi.domain.model.User;
 import live.servi.domain.port.output.PasswordEncoder;
 import live.servi.domain.port.output.UserRepository;
@@ -46,5 +47,22 @@ public class AuthService implements AuthUseCase {
 
         // guardar y retornar
         return userRepository.save(user);
+    }
+
+    public User signInCredentials(Credential credential) {
+        User user = userRepository.findByEmail(credential.getEmail())
+                .orElseThrow(() -> DomainException.unauthorized(
+                    "UNAUTHORIZED", 
+                    "Credenciales inválidas"
+                ));
+
+        if (!passwordEncoder.matches(credential.getPassword(), user.getPassword())) {
+            throw DomainException.unauthorized(
+                "UNAUTHORIZED", 
+                "Credenciales inválidas"
+            );
+        }
+
+        return user;
     }
 }

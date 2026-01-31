@@ -8,13 +8,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import live.servi.application.port.input.AuthUseCase;
+import live.servi.domain.model.Credential;
 import live.servi.domain.model.User;
 import live.servi.domain.port.output.TokenGenerator;
-import live.servi.infrastructure.adapter.input.rest.dto.CreateUserRequest;
+import live.servi.infrastructure.adapter.input.rest.dto.SignInCredentialsUserRequest;
+import live.servi.infrastructure.adapter.input.rest.dto.SignUpCredentialUserRequest;
 import live.servi.infrastructure.adapter.input.rest.dto.UserResponse;
 import live.servi.infrastructure.adapter.input.rest.mapper.UserRestMapper;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 /**
@@ -42,7 +42,7 @@ public class AuthController {
      * @return El usuario creado con status 201 CREATED
      */
     @PostMapping("/signup-credentials")
-    public ResponseEntity<UserResponse> createUser(@Valid @RequestBody CreateUserRequest request) {
+    public ResponseEntity<UserResponse> createUser(@Valid @RequestBody SignUpCredentialUserRequest request) {
         //convertir el DTO a modelo de dominio
         User user = userRestMapper.toDomain(request);
 
@@ -66,9 +66,28 @@ public class AuthController {
                 .body(response);
     }
 
-    @GetMapping("/signin-credentials")
-    public String getMethodName(@RequestParam String param) {
-        return new String();
+    @PostMapping("/signin-credentials")
+    public ResponseEntity<UserResponse> signInCredentials(@RequestBody SignInCredentialsUserRequest request) {
+        //convertir el DTO a modelo de dominio
+        Credential credential = userRestMapper.toDomain(request);
+
+        //ejecutar el caso de uso
+        User user = createUserUseCase.signInCredentials(credential);   
+        
+        //generar el token JWT
+        String token = tokenGenerator.generateToken(user.getId(), user.getEmail());
+        
+        //agregar el token en el header Authorization
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + token);
+
+        //convertir el resultado a DTO de respuesta
+        UserResponse response = userRestMapper.toResponse(user);
+        
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .headers(headers)
+                .body(response);
     }
     
 }
