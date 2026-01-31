@@ -14,7 +14,7 @@ import live.servi.domain.exception.DomainException;
 import live.servi.domain.model.Credential;
 import live.servi.domain.model.TokenParse;
 import live.servi.domain.model.User;
-import live.servi.domain.port.output.TokenGenerator;
+import live.servi.domain.port.output.security.TokenGenerator;
 import live.servi.infrastructure.adapter.input.rest.dto.SignInCredentialsUserRequest;
 import live.servi.infrastructure.adapter.input.rest.dto.SignUpCredentialUserRequest;
 import live.servi.infrastructure.adapter.input.rest.dto.UserResponse;

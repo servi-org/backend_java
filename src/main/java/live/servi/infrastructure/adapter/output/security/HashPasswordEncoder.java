@@ -1,7 +1,7 @@
 package live.servi.infrastructure.adapter.output.security;
-import live.servi.domain.port.output.PasswordEncoder;
-
 import org.springframework.security.crypto.bcrypt.BCrypt;
+
+import live.servi.domain.port.output.security.PasswordEncoder;
 
 public class HashPasswordEncoder implements PasswordEncoder {
     @Override

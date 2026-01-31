@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 import live.servi.domain.exception.DomainException;
 import live.servi.domain.model.TokenParse;
-import live.servi.domain.port.output.TokenGenerator;
+import live.servi.domain.port.output.security.TokenGenerator;
 import live.servi.infrastructure.exception.AppError;
 
 import javax.crypto.SecretKey;
