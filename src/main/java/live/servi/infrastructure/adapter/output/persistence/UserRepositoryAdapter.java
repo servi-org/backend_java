@@ -26,6 +26,7 @@ public class UserRepositoryAdapter implements UserRepository {
     }
 
     @Override
+    @SuppressWarnings("null")
     public User save(User user) {
         UserEntity entity = userMapper.toEntity(user);
         UserEntity savedEntity = jpaUserRepository.save(entity);
@@ -40,6 +41,9 @@ public class UserRepositoryAdapter implements UserRepository {
 
     @Override
     public Optional<User> findById(UUID id) {
+        if (id == null) {
+            return Optional.empty();
+        }
         return jpaUserRepository.findById(id)
                 .map(userMapper::toDomain);
     }

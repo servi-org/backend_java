@@ -2,8 +2,6 @@ package live.servi.infrastructure.adapter.input.rest;
 
 import jakarta.validation.Valid;
 
-import java.util.Map;
-
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
