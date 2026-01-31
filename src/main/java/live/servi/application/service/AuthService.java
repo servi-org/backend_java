@@ -9,8 +9,8 @@ import live.servi.domain.exception.DomainException;
 import live.servi.domain.model.Credential;
 import live.servi.domain.model.TokenParse;
 import live.servi.domain.model.User;
-import live.servi.domain.port.output.PasswordEncoder;
-import live.servi.domain.port.output.UserRepository;
+import live.servi.domain.port.output.persistence.UserRepository;
+import live.servi.domain.port.output.security.PasswordEncoder;
 
 /**
  * Servicio de app - Implementa los casos de uso

@@ -1,4 +1,4 @@
-package live.servi.domain.port.output;
+package live.servi.domain.port.output.persistence;
 
 import java.util.Optional;
 import java.util.UUID;

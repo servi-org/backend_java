@@ -3,7 +3,7 @@ package live.servi.infrastructure.adapter.output.persistence;
 import org.springframework.stereotype.Component;
 
 import live.servi.domain.model.User;
-import live.servi.domain.port.output.UserRepository;
+import live.servi.domain.port.output.persistence.UserRepository;
 import live.servi.infrastructure.adapter.output.persistence.entity.UserEntity;
 import live.servi.infrastructure.adapter.output.persistence.mapper.UserMapper;
 import live.servi.infrastructure.adapter.output.persistence.repository.JpaUserRepository;

@@ -1,4 +1,4 @@
-package live.servi.domain.port.output;
+package live.servi.domain.port.output.security;
 
 public interface PasswordEncoder {
     String encode(String rawPassword);
