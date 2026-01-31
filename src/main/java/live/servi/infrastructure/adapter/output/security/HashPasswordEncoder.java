@@ -1,10 +1,8 @@
 package live.servi.infrastructure.adapter.output.security;
 import live.servi.domain.port.output.PasswordEncoder;
-import lombok.NoArgsConstructor;
 
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
-@NoArgsConstructor
 public class HashPasswordEncoder implements PasswordEncoder {
     @Override
     public String encode(String rawPassword) {
