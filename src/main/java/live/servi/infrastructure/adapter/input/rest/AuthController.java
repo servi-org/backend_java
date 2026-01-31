@@ -17,7 +17,7 @@ import live.servi.domain.model.User;
 import live.servi.domain.port.output.security.TokenGenerator;
 import live.servi.infrastructure.adapter.input.rest.dto.SignInCredentialsUserRequest;
 import live.servi.infrastructure.adapter.input.rest.dto.SignUpCredentialUserRequest;
-import live.servi.infrastructure.adapter.input.rest.dto.UserResponse;
+import live.servi.infrastructure.adapter.input.rest.dto.AuthResponse;
 import live.servi.infrastructure.adapter.input.rest.mapper.UserRestMapper;
 
 
@@ -46,7 +46,7 @@ public class AuthController {
      * @return El usuario creado con status 201 CREATED
      */
     @PostMapping("/signup-credentials")
-    public ResponseEntity<UserResponse> createUser(@Valid @RequestBody SignUpCredentialUserRequest request) {
+    public ResponseEntity<AuthResponse> createUser(@Valid @RequestBody SignUpCredentialUserRequest request) {
         //convertir el DTO a modelo de dominio
         User user = userRestMapper.toDomain(request);
 
@@ -54,7 +54,7 @@ public class AuthController {
         User createdUser = createUserUseCase.createUser(user);
 
         //convertir el resultado a DTO de respuesta
-        UserResponse response = userRestMapper.toResponse(createdUser);
+        AuthResponse response = userRestMapper.toResponse(createdUser);
 
         //generar el token JWT
         String token = tokenGenerator.generateToken(createdUser.getId(), createdUser.getEmail());
@@ -71,7 +71,7 @@ public class AuthController {
     }
 
     @PostMapping("/signin-credentials")
-    public ResponseEntity<UserResponse> signInCredentials(@RequestBody SignInCredentialsUserRequest request) {
+    public ResponseEntity<AuthResponse> signInCredentials(@RequestBody SignInCredentialsUserRequest request) {
         //convertir el DTO a modelo de dominio
         Credential credential = userRestMapper.toDomain(request);
 
@@ -86,7 +86,7 @@ public class AuthController {
         headers.set("Authorization", "Bearer " + token);
 
         //convertir el resultado a DTO de respuesta
-        UserResponse response = userRestMapper.toResponse(user);
+        AuthResponse response = userRestMapper.toResponse(user);
         
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -95,7 +95,7 @@ public class AuthController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<UserResponse> me(@RequestHeader(value = "Authorization",  required = false) String authHeader) {
+    public ResponseEntity<AuthResponse> me(@RequestHeader(value = "Authorization",  required = false) String authHeader) {
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             throw DomainException.unauthorized(
                 "UNAUTHORIZED", 
@@ -113,7 +113,7 @@ public class AuthController {
         User user = createUserUseCase.getSession(tokenParsed);
         
         // Convertir el resultado a DTO de respuesta
-        UserResponse response = userRestMapper.toResponse(user);
+        AuthResponse response = userRestMapper.toResponse(user);
         
         return ResponseEntity.ok(response);
     }

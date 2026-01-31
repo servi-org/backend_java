@@ -6,7 +6,7 @@ import live.servi.domain.model.Credential;
 import live.servi.domain.model.User;
 import live.servi.infrastructure.adapter.input.rest.dto.SignUpCredentialUserRequest;
 import live.servi.infrastructure.adapter.input.rest.dto.SignInCredentialsUserRequest;
-import live.servi.infrastructure.adapter.input.rest.dto.UserResponse;
+import live.servi.infrastructure.adapter.input.rest.dto.AuthResponse;
 
 /**
  * Mapper para convertir entre DTOs y modelo de dominio
@@ -38,8 +38,8 @@ public class UserRestMapper {
     /**
      * Convierte el modelo de dominio a response
      */
-    public UserResponse toResponse(User user) {
-        return UserResponse.builder()
+    public AuthResponse toResponse(User user) {
+        return AuthResponse.builder()
                 .id(user.getId())
                 .name(user.getName())
                 .email(user.getEmail())
