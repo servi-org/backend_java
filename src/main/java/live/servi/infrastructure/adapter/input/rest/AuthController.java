@@ -2,13 +2,17 @@ package live.servi.infrastructure.adapter.input.rest;
 
 import jakarta.validation.Valid;
 
+import java.util.Map;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import live.servi.application.port.input.AuthUseCase;
+import live.servi.domain.exception.DomainException;
 import live.servi.domain.model.Credential;
+import live.servi.domain.model.TokenParse;
 import live.servi.domain.model.User;
 import live.servi.domain.port.output.TokenGenerator;
 import live.servi.infrastructure.adapter.input.rest.dto.SignInCredentialsUserRequest;
@@ -89,5 +93,30 @@ public class AuthController {
                 .headers(headers)
                 .body(response);
     }
+
+    @GetMapping("/me")
+    public ResponseEntity<UserResponse> me(@RequestHeader(value = "Authorization",  required = false) String authHeader) {
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            throw DomainException.unauthorized(
+                "UNAUTHORIZED", 
+                "Token invalido"
+            );
+        }
+
+        // Remover el prefijo "Bearer " del token
+        String token = authHeader.replace("Bearer ", "");
+
+        // Obtener la información del usuario a partir del token
+        TokenParse tokenParsed = tokenGenerator.parseToken(token);
+
+        // Llamar al caso de uso para obtener los detalles del usuario
+        User user = createUserUseCase.getSession(tokenParsed);
+        
+        // Convertir el resultado a DTO de respuesta
+        UserResponse response = userRestMapper.toResponse(user);
+        
+        return ResponseEntity.ok(response);
+    }
+    
     
 }

@@ -1,6 +1,7 @@
 package live.servi.application.port.input;
 
 import live.servi.domain.model.Credential;
+import live.servi.domain.model.TokenParse;
 import live.servi.domain.model.User;
 
 /**
@@ -10,4 +11,5 @@ import live.servi.domain.model.User;
 public interface AuthUseCase {
     User createUser(User user);
     User signInCredentials(Credential credential);
+    User getSession(TokenParse me);
 }

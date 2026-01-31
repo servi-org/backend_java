@@ -1,10 +1,13 @@
 package live.servi.application.service;
 
+import java.util.UUID;
+
 import org.springframework.stereotype.Service;
 
 import live.servi.application.port.input.AuthUseCase;
 import live.servi.domain.exception.DomainException;
 import live.servi.domain.model.Credential;
+import live.servi.domain.model.TokenParse;
 import live.servi.domain.model.User;
 import live.servi.domain.port.output.PasswordEncoder;
 import live.servi.domain.port.output.UserRepository;
@@ -65,4 +68,13 @@ public class AuthService implements AuthUseCase {
 
         return user;
     }
+
+    @Override
+    public User getSession(TokenParse me) {
+        return userRepository.findById(UUID.fromString(me.getUserId()))
+                .orElseThrow(() -> DomainException.unauthorized(
+                    "UNAUTHORIZED", 
+                    "Usuario no encontrado"
+                ));
+            }
 }

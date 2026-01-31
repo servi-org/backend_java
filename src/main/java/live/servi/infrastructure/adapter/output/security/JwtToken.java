@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import live.servi.domain.exception.DomainException;
+import live.servi.domain.model.TokenParse;
 import live.servi.domain.port.output.TokenGenerator;
 import live.servi.infrastructure.exception.AppError;
 
@@ -53,13 +54,16 @@ public class JwtToken implements TokenGenerator {
     }
 
     @Override
-    public Map<String, Object> parseToken(String token) {
+    public TokenParse parseToken(String token) {
         try {
-            return Jwts.parser()
-                    .verifyWith(secretKey)
-                    .build()
-                    .parseSignedClaims(token)
-                    .getPayload();
+            Map<String, Object> claims = Jwts.parser()
+                .verifyWith(secretKey)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+            String userId = (String) claims.get("userId");
+            String email = (String) claims.get("email");
+            return new TokenParse(userId, email);
         } catch (Exception e) {
             AppError error = AppError.of("JWT_PARSE_ERROR", "Error parsing JWT token", 401);
             throw new DomainException(error);
