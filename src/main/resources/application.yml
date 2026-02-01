@@ -17,7 +17,7 @@ spring:
     show-sql: ${SHOW_SQL:true}  # Muestra las queries SQL en la consola
     properties:
       hibernate:
-        format_sql: true  # Formatea las queries para mejor legibilidad
+        "[format_sql]": true  # Formatea las queries para mejor legibilidad
 
 
 
@@ -31,9 +31,9 @@ server:
 # Logs
 logging:
   level:
-    live.servi: ${LOG_LEVEL:DEBUG}
-    org.springframework.web: INFO
-    org.hibernate.SQL: DEBUG
+    "[live.servi]": ${LOG_LEVEL:DEBUG}
+    "[org.springframework.web]": INFO
+    "[org.hibernate.SQL]": DEBUG
 
 # Configuración JWT
 jwt:

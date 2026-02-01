@@ -2,12 +2,13 @@ package live.servi.infrastructure.adapter.output.security;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import live.servi.domain.exception.DomainException;
 import live.servi.domain.model.TokenParse;
 import live.servi.domain.port.output.security.TokenGenerator;
+import live.servi.infrastructure.config.JwtProperties;
 import live.servi.infrastructure.exception.AppError;
 
 import javax.crypto.SecretKey;
@@ -22,17 +23,17 @@ import java.util.UUID;
  * Implementa el puerto TokenGenerator
  */
 @Component
+@RequiredArgsConstructor
 public class JwtToken implements TokenGenerator {
 
-    private final SecretKey secretKey;
-    private final long expirationTime;
+    private final JwtProperties jwtProperties;
+    private SecretKey secretKey;
 
-    public JwtToken(
-            @Value("${jwt.secret}") String secret,
-            @Value("${jwt.expiration:3600000}") long expirationTime
-    ) {
-        this.secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
-        this.expirationTime = expirationTime;
+    private SecretKey getSecretKey() {
+        if (secretKey == null) {
+            secretKey = Keys.hmacShaKeyFor(jwtProperties.getSecret().getBytes(StandardCharsets.UTF_8));
+        }
+        return secretKey;
     }
 
     @Override
@@ -42,14 +43,14 @@ public class JwtToken implements TokenGenerator {
         claims.put("email", email);
 
         Date now = new Date();
-        Date expirationDate = new Date(now.getTime() + expirationTime);
+        Date expirationDate = new Date(now.getTime() + jwtProperties.getExpiration());
 
         return Jwts.builder()
                 .claims(claims)
                 .subject(email)
                 .issuedAt(now)
                 .expiration(expirationDate)
-                .signWith(secretKey)
+                .signWith(getSecretKey())
                 .compact();
     }
 
@@ -57,7 +58,7 @@ public class JwtToken implements TokenGenerator {
     public TokenParse parseToken(String token) {
         try {
             Map<String, Object> claims = Jwts.parser()
-                .verifyWith(secretKey)
+                .verifyWith(getSecretKey())
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
